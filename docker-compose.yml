@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo
+    command: mongod --port 8003
+    container_name: mongoDB
+    networks:
+      - net.mongo.db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - data.mongo.db:/data/db
+    restart: always
+
+networks:
+  net.mongo.db:
+    name: "net.webMuffins.mongo.db"
+    driver: bridge
+
+volumes:
+  data.mongo.db:
+    name: "data.webMuffins.mongo.db"
