@@ -1,0 +1,16 @@
+server:
+  port: ${SERVER_PORT:8086}
+
+spring:
+  data:
+    mongodb:
+      authentication-database: admin
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
+      database: ${DB_NAME}
+      port: ${DB_PORT}
+      host: ${DB_HOST}
+
+message:
+  creationDate:
+    pattern: 'dd/MM/yyyy HH:mm:ss.SSS'
