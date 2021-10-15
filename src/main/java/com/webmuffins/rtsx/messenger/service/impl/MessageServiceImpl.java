@@ -1,22 +1,24 @@
 package com.webmuffins.rtsx.messenger.service.impl;
 
-import com.webmuffins.rtsx.messenger.converter.Converter;
-import com.webmuffins.rtsx.messenger.model.Message;
-import com.webmuffins.rtsx.messenger.model.MessageRequest;
+import com.webmuffins.rtsx.messenger.dto.MessageRequestDto;
+import com.webmuffins.rtsx.messenger.entity.Message;
+import com.webmuffins.rtsx.messenger.mapper.Mapper;
 import com.webmuffins.rtsx.messenger.repository.MessageRepository;
 import com.webmuffins.rtsx.messenger.service.MessageService;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Service("messageService")
 public class MessageServiceImpl implements MessageService {
 
-    @Resource
-    private MessageRepository messageRepository;
-    @Resource
-    private Converter<MessageRequest, Message> messageRequestMessageConverter;
+    private final MessageRepository messageRepository;
+    private final Mapper<Message, MessageRequestDto, Message> messageMapper;
+
+    public MessageServiceImpl(MessageRepository messageRepository, Mapper<Message, MessageRequestDto, Message> messageMapper) {
+        this.messageRepository = messageRepository;
+        this.messageMapper = messageMapper;
+    }
 
     @Override
     public List<Message> getAllMessages() {
@@ -24,8 +26,8 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Message createNewMessages(MessageRequest messageRequest) {
-        Message message = messageRequestMessageConverter.convert(messageRequest);
+    public Message createNewMessages(MessageRequestDto messageRequestDto) {
+        Message message = messageMapper.mapDtoToEntity(messageRequestDto);
         return messageRepository.insert(message);
     }
 }

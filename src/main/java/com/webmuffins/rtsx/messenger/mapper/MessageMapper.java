@@ -1,7 +1,7 @@
-package com.webmuffins.rtsx.messenger.converter;
+package com.webmuffins.rtsx.messenger.mapper;
 
-import com.webmuffins.rtsx.messenger.model.Message;
-import com.webmuffins.rtsx.messenger.model.MessageRequest;
+import com.webmuffins.rtsx.messenger.dto.MessageRequestDto;
+import com.webmuffins.rtsx.messenger.entity.Message;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -9,13 +9,18 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Component
-public class MessageResponseMessageConverter implements Converter<MessageRequest, Message> {
+public class MessageMapper implements Mapper<Message, MessageRequestDto, Message> {
 
     @Value("${message.creationDate.pattern}")
     private String dateTimeFormat;
 
     @Override
-    public Message convert(MessageRequest messageRequest) {
+    public Message mapEntityToDto(Message message) {
+        return message;
+    }
+
+    @Override
+    public Message mapDtoToEntity(MessageRequestDto messageRequest) {
         Message message = new Message();
         message.setMessageText(messageRequest.getMessageText());
         populateCreationDate(message);

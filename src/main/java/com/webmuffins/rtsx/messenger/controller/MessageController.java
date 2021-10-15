@@ -1,11 +1,10 @@
 package com.webmuffins.rtsx.messenger.controller;
 
-import com.webmuffins.rtsx.messenger.model.Message;
-import com.webmuffins.rtsx.messenger.model.MessageRequest;
+import com.webmuffins.rtsx.messenger.dto.MessageRequestDto;
+import com.webmuffins.rtsx.messenger.entity.Message;
 import com.webmuffins.rtsx.messenger.service.MessageService;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -13,8 +12,11 @@ import java.util.List;
 @RequestMapping("/messages")
 public class MessageController {
 
-    @Resource
-    MessageService messageService;
+    private final MessageService messageService;
+
+    public MessageController(MessageService messageService) {
+        this.messageService = messageService;
+    }
 
     @GetMapping
     public List<Message> getAllMessages() {
@@ -22,7 +24,7 @@ public class MessageController {
     }
 
     @PostMapping
-    public Message createMessages(@Valid @RequestBody MessageRequest messageRequest) {
-        return messageService.createNewMessages(messageRequest);
+    public Message createMessages(@Valid @RequestBody MessageRequestDto messageRequestDto) {
+        return messageService.createNewMessages(messageRequestDto);
     }
 }

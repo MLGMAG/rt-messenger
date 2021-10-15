@@ -1,8 +1,8 @@
 package com.webmuffins.rtsx.messenger.service.impl;
 
-import com.webmuffins.rtsx.messenger.converter.Converter;
-import com.webmuffins.rtsx.messenger.model.Message;
-import com.webmuffins.rtsx.messenger.model.MessageRequest;
+import com.webmuffins.rtsx.messenger.dto.MessageRequestDto;
+import com.webmuffins.rtsx.messenger.entity.Message;
+import com.webmuffins.rtsx.messenger.mapper.Mapper;
 import com.webmuffins.rtsx.messenger.repository.MessageRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,15 +19,17 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class MessageServiceImplTest {
 
-    private final MessageRequest messageRequest = new MessageRequest();
-    private final Message message = new Message();
-    private final List<Message> messageList = Collections.singletonList(message);
+    private final MessageRequestDto messageRequestDto = new MessageRequestDto();
+
     @Mock
     private MessageRepository messageRepository;
     @Mock
-    private Converter<MessageRequest, Message> messageRequestMessageConverter;
+    private Mapper<Message, MessageRequestDto, Message> messageMapper;
     @InjectMocks
     private MessageServiceImpl testInstance;
+
+    private final Message message = new Message();
+    private final List<Message> messageList = Collections.singletonList(message);
 
     @Test
     void shouldGetAllMessages() {
@@ -40,10 +42,10 @@ class MessageServiceImplTest {
 
     @Test
     void shouldCreateNewMessages() {
-        when(messageRequestMessageConverter.convert(messageRequest)).thenReturn(message);
+        when(messageMapper.mapDtoToEntity(messageRequestDto)).thenReturn(message);
         when(messageRepository.insert(message)).thenReturn(message);
 
-        Message actual = testInstance.createNewMessages(messageRequest);
+        Message actual = testInstance.createNewMessages(messageRequestDto);
 
         assertThat(actual).isEqualTo(message);
     }
