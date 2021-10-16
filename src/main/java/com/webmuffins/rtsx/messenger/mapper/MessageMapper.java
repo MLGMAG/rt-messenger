@@ -27,11 +27,11 @@ public class MessageMapper implements Mapper<Message, MessageRequestDto, Message
         return message;
     }
 
-    private void populateCreationDate(Message messageObj) {
+    private void populateCreationDate(Message message) {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(dateTimeFormat);
         LocalDateTime creationDate = LocalDateTime.now();
         String formattedCreationDate = creationDate.format(dateFormat);
-        messageObj.setCreationDate(formattedCreationDate);
+        message.setCreationDate(formattedCreationDate);
     }
 
     public void setDateTimeFormat(String dateTimeFormat) {
