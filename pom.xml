@@ -16,6 +16,7 @@
     <properties>
         <java.version>11</java.version>
         <spring-cloud.version>2021.0.0-RC1</spring-cloud.version>
+        <springdoc-openapi-ui.version>1.5.13</springdoc-openapi-ui.version>
     </properties>
     <dependencies>
         <dependency>
@@ -45,12 +46,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.5.13</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.5.13</version>
+            <version>${springdoc-openapi-ui.version}</version>
         </dependency>
 
         <dependency>
