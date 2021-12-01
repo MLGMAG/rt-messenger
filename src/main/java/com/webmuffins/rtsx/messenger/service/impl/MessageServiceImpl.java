@@ -7,6 +7,7 @@ import com.webmuffins.rtsx.messenger.repository.MessageRepository;
 import com.webmuffins.rtsx.messenger.service.MessageService;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service("messageService")
@@ -22,7 +23,9 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<Message> getAllMessages() {
-        return messageRepository.findAll();
+        List<Message> messages = messageRepository.findAll();
+        messages.sort(Comparator.comparing(Message::getCreationDate));
+        return messages;
     }
 
     @Override
