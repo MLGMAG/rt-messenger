@@ -19,13 +19,8 @@ public class MessageMapper implements Mapper<Message, MessageRequestDto, Message
     public MessageResponseDto mapEntityToDto(Message message) {
         MessageResponseDto messageResponseDto = new MessageResponseDto();
         messageResponseDto.setMessageText(message.getMessageText());
-        populateCreationDate(message, messageResponseDto);
+        messageResponseDto.setCreationDate(message.getCreationDate());
         return messageResponseDto;
-    }
-
-    private void populateCreationDate(Message message, MessageResponseDto messageResponseDto) {
-        LocalDateTime creationDate = DateUtil.stringIntoDate(message.getCreationDate(), dateTimeFormat);
-        messageResponseDto.setCreationDate(creationDate);
     }
 
     @Override

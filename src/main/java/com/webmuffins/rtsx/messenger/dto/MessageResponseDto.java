@@ -1,15 +1,13 @@
 package com.webmuffins.rtsx.messenger.dto;
 
-import java.time.LocalDateTime;
-
 public class MessageResponseDto {
     private String messageText;
-    private LocalDateTime creationDate;
+    private String creationDate;
 
     public MessageResponseDto() {
     }
 
-    public MessageResponseDto(String messageText, LocalDateTime creationDate) {
+    public MessageResponseDto(String messageText, String creationDate) {
         this.messageText = messageText;
         this.creationDate = creationDate;
     }
@@ -22,11 +20,11 @@ public class MessageResponseDto {
         this.messageText = messageText;
     }
 
-    public LocalDateTime getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 }
