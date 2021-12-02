@@ -1,22 +1,31 @@
 package com.webmuffins.rtsx.messenger.mapper;
 
 import com.webmuffins.rtsx.messenger.dto.MessageRequestDto;
+import com.webmuffins.rtsx.messenger.dto.MessageResponseDto;
 import com.webmuffins.rtsx.messenger.entity.Message;
+import com.webmuffins.rtsx.messenger.util.DateUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Component
-public class MessageMapper implements Mapper<Message, MessageRequestDto, Message> {
+public class MessageMapper implements Mapper<Message, MessageRequestDto, MessageResponseDto> {
 
     @Value("${message.creationDate.pattern}")
     private String dateTimeFormat;
 
     @Override
-    public Message mapEntityToDto(Message message) {
-        return message;
+    public MessageResponseDto mapEntityToDto(Message message) {
+        MessageResponseDto messageResponseDto = new MessageResponseDto();
+        messageResponseDto.setMessageText(message.getMessageText());
+        populateCreationDate(message, messageResponseDto);
+        return messageResponseDto;
+    }
+
+    private void populateCreationDate(Message message, MessageResponseDto messageResponseDto) {
+        LocalDateTime creationDate = DateUtil.stringIntoDate(message.getCreationDate(), dateTimeFormat);
+        messageResponseDto.setCreationDate(creationDate);
     }
 
     @Override
@@ -28,13 +37,8 @@ public class MessageMapper implements Mapper<Message, MessageRequestDto, Message
     }
 
     private void populateCreationDate(Message message) {
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(dateTimeFormat);
         LocalDateTime creationDate = LocalDateTime.now();
-        String formattedCreationDate = creationDate.format(dateFormat);
+        String formattedCreationDate = DateUtil.dateIntoString(creationDate, dateTimeFormat);
         message.setCreationDate(formattedCreationDate);
-    }
-
-    public void setDateTimeFormat(String dateTimeFormat) {
-        this.dateTimeFormat = dateTimeFormat;
     }
 }
