@@ -1,9 +1,11 @@
 let stompClient = null;
 
-const STOMP_ENDPOINT = '/chat-service/stomp-endpoint';
-const APPLICATION_ENDPOINT = '/chat-service/app';
-const CREATE_MESSAGE_ENDPOINT = APPLICATION_ENDPOINT + '/message';
-const MESSAGES_TOPIC = '/chat-service/topic/messages';
+const APPLICATION_ENDPOINT = '/chat-service';
+const STOMP_HTTP_ENDPOINT = APPLICATION_ENDPOINT + '/stomp-endpoint';
+const ALL_MESSAGES_HTTP_ENDPOINT = APPLICATION_ENDPOINT + "/messages";
+
+const CREATE_MESSAGE_SOCKET_ENDPOINT ='/app/message';
+const MESSAGES_TOPIC = '/topic/messages';
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -18,7 +20,7 @@ function setConnected(connected) {
 }
 
 function connect() {
-    let socket = new SockJS(STOMP_ENDPOINT);
+    let socket = new SockJS(STOMP_HTTP_ENDPOINT);
     stompClient = Stomp.over(socket);
 
     let subscribeFunction = function (message) {
@@ -30,7 +32,7 @@ function connect() {
             data.forEach(showMessage);
         };
 
-        $.get('/chat-service/messages', successCallback);
+        $.get(ALL_MESSAGES_HTTP_ENDPOINT, successCallback);
     }
 
     let postConnectActions = function (frame) {
@@ -55,7 +57,7 @@ function sendMessage() {
     let inputValue = $("#name").val();
     let request = {'messageText': inputValue};
     let requestJson = JSON.stringify(request);
-    stompClient.send(CREATE_MESSAGE_ENDPOINT, {}, requestJson);
+    stompClient.send(CREATE_MESSAGE_SOCKET_ENDPOINT, {}, requestJson);
 }
 
 function showMessage(message) {
