@@ -1,6 +1,7 @@
 package com.webmuffins.rtsx.messenger.service.impl;
 
 import com.webmuffins.rtsx.messenger.dto.MessageRequestDto;
+import com.webmuffins.rtsx.messenger.dto.MessageResponseDto;
 import com.webmuffins.rtsx.messenger.entity.Message;
 import com.webmuffins.rtsx.messenger.mapper.Mapper;
 import com.webmuffins.rtsx.messenger.repository.MessageRepository;
@@ -24,20 +25,24 @@ class MessageServiceImplTest {
     @Mock
     private MessageRepository messageRepository;
     @Mock
-    private Mapper<Message, MessageRequestDto, Message> messageMapper;
+    private Mapper<Message, MessageRequestDto, MessageResponseDto> messageMapper;
     @InjectMocks
     private MessageServiceImpl testInstance;
 
     private final Message message = new Message();
+    private final MessageResponseDto messageResponseDto = new MessageResponseDto();
+
     private final List<Message> messageList = Collections.singletonList(message);
+    private final List<MessageResponseDto> messageResponseDtoList = Collections.singletonList(messageResponseDto);
 
     @Test
     void shouldGetAllMessages() {
         when(messageRepository.findAll()).thenReturn(messageList);
+        when(messageMapper.mapEntityToDto(message)).thenReturn(messageResponseDto);
 
-        List<Message> actual = testInstance.getAllMessages();
+        List<MessageResponseDto> actual = testInstance.getAllMessages();
 
-        assertThat(actual).isEqualTo(messageList);
+        assertThat(actual).isEqualTo(messageResponseDtoList);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.webmuffins.rtsx.messenger.controller;
 
 import com.webmuffins.rtsx.messenger.dto.MessageRequestDto;
+import com.webmuffins.rtsx.messenger.dto.MessageResponseDto;
 import com.webmuffins.rtsx.messenger.entity.Message;
 import com.webmuffins.rtsx.messenger.service.MessageService;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class MessageController {
     }
 
     @GetMapping
-    public List<Message> getAllMessages() {
+    public List<MessageResponseDto> getAllMessages() {
         return messageService.getAllMessages();
     }
 
