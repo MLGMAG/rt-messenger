@@ -1,9 +1,9 @@
 let stompClient = null;
 
-const STOMP_ENDPOINT = '/stomp-endpoint';
-const APPLICATION_ENDPOINT = '/app';
+const STOMP_ENDPOINT = '/chat-service/stomp-endpoint';
+const APPLICATION_ENDPOINT = '/chat-service/app';
 const CREATE_MESSAGE_ENDPOINT = APPLICATION_ENDPOINT + '/message';
-const MESSAGES_TOPIC = '/topic/messages';
+const MESSAGES_TOPIC = '/chat-service/topic/messages';
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -30,7 +30,7 @@ function connect() {
             data.forEach(showMessage);
         };
 
-        $.get('/messages', successCallback);
+        $.get('/chat-service/messages', successCallback);
     }
 
     let postConnectActions = function (frame) {
