@@ -2,19 +2,14 @@ package com.webmuffins.rtsx.messenger.security;
 
 import com.webmuffins.rtsx.messenger.constants.Role;
 import com.webmuffins.rtsx.messenger.exception.JwtAuthenticationException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
 import java.util.Date;
 
 import static org.apache.commons.lang3.BooleanUtils.isFalse;
@@ -28,10 +23,21 @@ public class JwtTokenProvider {
     private String authorizationHeader;
     @Value("${jwt.body.role-key}")
     private String roleKey;
+    @Value("${jwt.validity-time}")
+    private long validityTime;
 
-    @PostConstruct
-    protected void init() {
-        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+    public String createJwtToken(String email, Role role) {
+        Claims claims = Jwts.claims().setSubject(email);
+        claims.put("role", role.getName());
+        Date now = new Date();
+        Date expiration = new Date(now.getTime() + validityTime * 1000);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(expiration)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
     }
 
     public boolean validateToken(String token) {
