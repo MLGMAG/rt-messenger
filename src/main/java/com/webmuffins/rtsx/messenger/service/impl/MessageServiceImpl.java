@@ -49,4 +49,9 @@ public class MessageServiceImpl implements MessageService {
         Message message = messageMapper.mapDtoToEntity(messageRequestDto);
         return messageRepository.insert(message);
     }
+
+    @Override
+    public void deleteMessage(String id) {
+        messageRepository.deleteById(id);
+    }
 }

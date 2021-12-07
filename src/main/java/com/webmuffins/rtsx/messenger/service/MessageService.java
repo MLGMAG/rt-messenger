@@ -10,4 +10,6 @@ public interface MessageService {
     List<MessageResponseDto> getAllMessages();
 
     Message createNewMessages(MessageRequestDto messageRequestDto);
+
+    void deleteMessage(String id);
 }
