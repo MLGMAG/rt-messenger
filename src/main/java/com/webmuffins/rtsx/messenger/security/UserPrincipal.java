@@ -10,6 +10,9 @@ public class UserPrincipal {
     private String email;
     private Role role;
 
+    public UserPrincipal() {
+    }
+
     public UserPrincipal(String email, Role role) {
         this.email = email;
         this.role = role;
