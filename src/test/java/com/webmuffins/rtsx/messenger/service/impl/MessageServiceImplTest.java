@@ -15,12 +15,13 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class MessageServiceImplTest {
 
-    private final MessageRequestDto messageRequestDto = new MessageRequestDto();
+    private static final String MESSAGE_ID = "1234";
 
     @Mock
     private MessageRepository messageRepository;
@@ -30,6 +31,7 @@ class MessageServiceImplTest {
     private MessageServiceImpl testInstance;
 
     private final Message message = new Message();
+    private final MessageRequestDto messageRequestDto = new MessageRequestDto();
     private final MessageResponseDto messageResponseDto = new MessageResponseDto();
 
     private final List<Message> messageList = Collections.singletonList(message);
@@ -53,5 +55,12 @@ class MessageServiceImplTest {
         Message actual = testInstance.createNewMessages(messageRequestDto);
 
         assertThat(actual).isEqualTo(message);
+    }
+
+    @Test
+    void shouldDeleteMessage() {
+        testInstance.deleteMessage(MESSAGE_ID);
+
+        verify(messageRepository).deleteById(MESSAGE_ID);
     }
 }
