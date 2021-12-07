@@ -1,7 +1,7 @@
 package com.webmuffins.rtsx.messenger.controller;
 
 import com.webmuffins.rtsx.messenger.dto.MessageRequestDto;
-import com.webmuffins.rtsx.messenger.entity.Message;
+import com.webmuffins.rtsx.messenger.dto.MessageResponseDto;
 import com.webmuffins.rtsx.messenger.service.MessageService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -21,7 +21,7 @@ public class MessageSocketController {
 
     @MessageMapping("/message")
     @SendTo("/topic/messages")
-    public Message createMessage(@Valid @RequestBody MessageRequestDto messageRequestDto) {
+    public MessageResponseDto createMessage(@Valid @RequestBody MessageRequestDto messageRequestDto) {
         return messageService.createNewMessages(messageRequestDto);
     }
 }

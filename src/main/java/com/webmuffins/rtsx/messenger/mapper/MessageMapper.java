@@ -19,12 +19,10 @@ import java.time.LocalDateTime;
 public class MessageMapper implements Mapper<Message, MessageRequestDto, MessageResponseDto> {
 
     private static final String FULL_NAME_PATTER = "%s %s";
-
-    @Value("${message.creationDate.pattern}")
-    private String dateTimeFormat;
-
     private final JwtTokenProvider jwtTokenProvider;
     private final UserClient userClient;
+    @Value("${message.creationDate.pattern}")
+    private String dateTimeFormat;
 
     public MessageMapper(JwtTokenProvider jwtTokenProvider, UserClient userClient) {
         this.jwtTokenProvider = jwtTokenProvider;
