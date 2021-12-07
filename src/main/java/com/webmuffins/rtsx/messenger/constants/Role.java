@@ -23,6 +23,13 @@ public enum Role {
         this.name = name;
     }
 
+    public static Role getRoleByName(String name) {
+        return Arrays.stream(values())
+                .filter(role -> role.getName().equals(name))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Can not find role by name : " + name));
+    }
+
     public Set<Permission> getPermissions() {
         return permissions;
     }
@@ -35,13 +42,6 @@ public enum Role {
         return getPermissions().stream()
                 .map(permission -> new SimpleGrantedAuthority(permission.getName()))
                 .collect(Collectors.toSet());
-    }
-
-    public static Role getRoleByName(String name) {
-        return Arrays.stream(values())
-                .filter(role -> role.getName().equals(name))
-                .findFirst()
-                .orElseThrow(() -> new NotFoundException("Can not find role by name : " + name));
     }
 
 }
