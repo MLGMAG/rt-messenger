@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
+import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.BooleanUtils.isFalse;
 
 @Component
@@ -21,6 +22,8 @@ public class JwtTokenProvider {
     private String secretKey;
     @Value("${jwt.header}")
     private String authorizationHeader;
+    @Value("${jwt.parameter}")
+    private String authorizationParameter;
     @Value("${jwt.body.role-key}")
     private String roleKey;
     @Value("${jwt.validity-time}")
@@ -73,6 +76,12 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader(authorizationHeader);
+        String jwtToken = request.getHeader(authorizationHeader);
+
+        if (isNull(jwtToken)) {
+            jwtToken = request.getParameter(authorizationParameter);
+        }
+
+        return jwtToken;
     }
 }

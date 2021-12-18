@@ -10,6 +10,7 @@ import com.webmuffins.rtsx.messenger.security.JwtTokenProvider;
 import com.webmuffins.rtsx.messenger.security.UserPrincipal;
 import com.webmuffins.rtsx.messenger.util.DateUtil;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -44,7 +45,7 @@ public class MessageMapper implements Mapper<Message, MessageRequestDto, Message
     public Message mapDtoToEntity(MessageRequestDto messageRequest) {
         Message message = new Message();
         message.setMessageText(messageRequest.getMessageText());
-        populateUserInfo(message);
+        populateUserInfo(messageRequest, message);
         populateCreationDate(message);
         return message;
     }
@@ -55,8 +56,14 @@ public class MessageMapper implements Mapper<Message, MessageRequestDto, Message
         message.setCreationDate(formattedCreationDate);
     }
 
-    private void populateUserInfo(Message message) {
-        UserPrincipal principal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    private void populateUserInfo(MessageRequestDto messageRequest, Message message) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            authentication = jwtTokenProvider.getAuthentication(messageRequest.getJwtToken());
+        }
+
+        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
         populateEmail(message, principal);
         populateFullName(message, principal);
     }

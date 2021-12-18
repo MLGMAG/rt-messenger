@@ -8,10 +8,12 @@ public class MessageRequestDto {
     @NotBlank
     private String messageText;
 
+    private String jwtToken;
+
     public MessageRequestDto() {
     }
 
-    public MessageRequestDto(String messageText) {
+    public MessageRequestDto(String messageText, String jwtToken) {
         this.messageText = messageText;
     }
 
@@ -21,5 +23,13 @@ public class MessageRequestDto {
 
     public void setMessageText(String messageText) {
         this.messageText = messageText;
+    }
+
+    public String getJwtToken() {
+        return jwtToken;
+    }
+
+    public void setJwtToken(String jwtToken) {
+        this.jwtToken = jwtToken;
     }
 }
