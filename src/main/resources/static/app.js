@@ -1,8 +1,10 @@
 let stompClient = null;
 
 const APPLICATION_ENDPOINT = '/chat-service';
-const STOMP_HTTP_ENDPOINT = APPLICATION_ENDPOINT + '/stomp-endpoint';
-const ALL_MESSAGES_HTTP_ENDPOINT = APPLICATION_ENDPOINT + "/messages";
+const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0QGVtYWlsLmNvbSIsInJvbGUiOiJNYW5hZ2VyIiwiZXhwIjoxNjY5MjU3OTIyMDY3fQ.jwfSYaCG69_fEn2YjyXzh_ACgXG66PFWvOddEpb9Bv0";
+const ACCESS_PARAMETER = "?access_token=" + TOKEN;
+const STOMP_HTTP_ENDPOINT = APPLICATION_ENDPOINT + '/stomp-endpoint' + ACCESS_PARAMETER;
+const ALL_MESSAGES_HTTP_ENDPOINT = APPLICATION_ENDPOINT + "/messages" + ACCESS_PARAMETER;
 
 const CREATE_MESSAGE_SOCKET_ENDPOINT ='/app/message';
 const MESSAGES_TOPIC = '/topic/messages';
@@ -55,7 +57,7 @@ function disconnect() {
 
 function sendMessage() {
     let inputValue = $("#name").val();
-    let request = {'messageText': inputValue};
+    let request = {'messageText': inputValue, 'jwtToken': TOKEN};
     let requestJson = JSON.stringify(request);
     stompClient.send(CREATE_MESSAGE_SOCKET_ENDPOINT, {}, requestJson);
 }
